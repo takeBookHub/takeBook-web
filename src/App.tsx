@@ -5,7 +5,7 @@ import Email from "./views/Email";
 import Loading from "./views/Loading";
 
 import { useAtom } from "jotai";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 
 import { currentViewAtom } from "./atoms/siteStates.ts";
@@ -22,15 +22,7 @@ export default function App() {
 
   const [isRequestLoading, setIsRequestLoading] = useState(false);
 
-  const scrollInto = useRef(null);
-
   const cookie = new Cookies();
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    scrollInto.current.scrollIntoView();
-  });
 
   useEffect(() => {
     (async () => {
