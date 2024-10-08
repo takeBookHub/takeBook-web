@@ -42,6 +42,9 @@ jobs:
           fetch-depth: 1
           ref: gh-pages
 
+      - name: Create dist directory
+        run: mkdir -p ./dist
+
       - name: Copy existing CNAME file if it exists
         run: |
           if [ -f ./CNAME ]; then
