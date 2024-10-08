@@ -54,7 +54,7 @@ export default function Auth() {
           });
         }
       }}
-      className="w-[100vw] h-[100vh] flex flex-col gap-10 items-center justify-center"
+      className="w-full h-full flex flex-col gap-10 items-center justify-center"
     >
       <div className="flex gap-4">
         <img

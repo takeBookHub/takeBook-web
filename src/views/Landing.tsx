@@ -7,7 +7,7 @@ export default function Landing() {
   const [, setCurrentView] = useAtom(currentViewAtom);
 
   return (
-    <div className="w-[100vw] h-[100vh] flex flex-col gap-8 items-center justify-center">
+    <div className="w-full h-full flex flex-col gap-8 items-center justify-center">
       <div className="bg-white rounded-full w-36 p-6 shadow-[rgba(239,239,239,1)_0px_8px_0px_0px]">
         <img
           className="w-full select-none"

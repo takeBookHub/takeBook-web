@@ -19,7 +19,7 @@ export default function Email() {
   const cookies = new Cookies();
 
   return (
-    <div className="w-[100vw] h-[100vh] flex flex-col items-center justify-center gap-2">
+    <div className="w-full h-full flex flex-col items-center justify-center gap-2">
       <div className="flex items-center justify-center gap-2">
         <img
           className="h-4"
