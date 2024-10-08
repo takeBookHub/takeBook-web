@@ -36,7 +36,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center py-4 pl-4 md:pr-4">
+    <div className="w-full h-full flex items-center justify-center py-4 pl-2 md:pr-4">
       <div className="w-full max-w-[1000px] h-full max-h-[600px] pb-[5px] bg-[#aadcab] rounded-tl-[72px] rounded-bl-[72px] md:rounded-tr-[72px] md:rounded-br-[72px] flex-col justify-start items-center flex">
         <div className="self-stretch h-full pl-4 md:pr-4 pt-2 pb-[17px] bg-[#c0f4c1] rounded-tl-[72px] rounded-bl-[72px] md:rounded-tr-[72px] md:rounded-br-[72px] flex-col justify-start items-center flex">
           <div className="self-stretch h-full pb-[19px] bg-[#eeeeee] rounded-tl-[72px] rounded-bl-[72px] md:rounded-tr-[72px] md:rounded-br-[72px] flex-col justify-start items-center flex">
