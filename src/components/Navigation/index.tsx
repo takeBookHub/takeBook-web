@@ -17,7 +17,7 @@ export default function Navigation() {
         >
           <img
             className="h-10 select-none"
-            src="../src/assets/icons/takebook-logo.svg"
+            src="/icons/takebook-logo.svg"
             alt="takeBook Logo"
             draggable={false}
           />

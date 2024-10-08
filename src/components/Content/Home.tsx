@@ -59,13 +59,13 @@ export default function Home() {
                 <div className="md:flex gap-3 hidden mt-7">
                   <img
                     className="h-6 select-none"
-                    src="../src/assets/icons/takebook-logo.svg"
+                    src="/icons/takebook-logo.svg"
                     alt="takeBook Logo"
                     draggable={false}
                   />
                   <img
                     className="h-5 select-none"
-                    src="../src/assets/icons/takebook-text.svg"
+                    src="/icons/takebook-text.svg"
                     alt="takeBook"
                     draggable={false}
                   />
@@ -73,25 +73,25 @@ export default function Home() {
               </div>
               <div className="flex flex-col items-center gap-2 w-full">
                 <Button
-                  icon="../src/assets/icons/chat.svg"
+                  icon="/icons/chat.svg"
                   onClick={() => setCurrentHomeContent("chat")}
                 >
                   Learn with Pandy
                 </Button>
                 <Button
-                  icon="../src/assets/icons/leaderboard.svg"
+                  icon="/icons/leaderboard.svg"
                   onClick={() => setCurrentHomeContent("leaderboard")}
                 >
                   Our best students
                 </Button>
                 <Button
-                  icon="../src/assets/icons/profile.svg"
+                  icon="/icons/profile.svg"
                   onClick={() => setCurrentHomeContent("profile")}
                 >
                   Customize your profile
                 </Button>
                 <Button
-                  icon="../src/assets/icons/group.svg"
+                  icon="/icons/group.svg"
                   onClick={() => setCurrentHomeContent("community")}
                   disabled={true}
                 >
@@ -101,13 +101,13 @@ export default function Home() {
               <div className="flex gap-3 md:hidden">
                 <img
                   className="h-6 select-none"
-                  src="../src/assets/icons/takebook-logo.svg"
+                  src="/icons/takebook-logo.svg"
                   alt="takeBook Logo"
                   draggable={false}
                 />
                 <img
                   className="h-5 select-none"
-                  src="../src/assets/icons/takebook-text.svg"
+                  src="/icons/takebook-text.svg"
                   alt="takeBook"
                   draggable={false}
                 />

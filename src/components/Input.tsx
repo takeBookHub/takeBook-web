@@ -41,9 +41,9 @@ export default function Input({
           className="pr-2 outline-none"
         >
           {isPasswordVisible ? (
-            <img className="h-8" src="../src/assets/icons/visibility-on.svg" alt="Hide" />
+            <img className="h-8" src="/icons/visibility-on.svg" alt="Hide" />
           ) : (
-            <img className="h-8" src="../src/assets/icons/visibility-off.svg" alt="Show" />
+            <img className="h-8" src="/icons/visibility-off.svg" alt="Show" />
           )}
         </button>
       )}

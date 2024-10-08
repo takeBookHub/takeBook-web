@@ -59,10 +59,10 @@ export default function Auth() {
       <div className="flex gap-4">
         <img
           className="h-12"
-          src="../src/assets/icons/takebook-logo.svg"
+          src="/icons/takebook-logo.svg"
           alt="takeBook Logo"
         />
-        <img src="../src/assets/icons/takebook-text.svg" alt="takeBook" />
+        <img src="/icons/takebook-text.svg" alt="takeBook" />
       </div>
       <div className="flex flex-col items-center w-11/12 sm:w-96 gap-3">
         <div className="flex flex-col gap-1 w-full">

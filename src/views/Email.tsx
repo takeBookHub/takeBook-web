@@ -25,8 +25,8 @@ export default function Email() {
           className="h-4"
           src={
             isSuccessful === false
-              ? "../src/assets/icons/warning.svg"
-              : "../src/assets/icons/email.svg"
+              ? "/icons/warning.svg"
+              : "/icons/email.svg"
           }
           alt="Email Icon"
         />
