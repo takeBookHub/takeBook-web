@@ -87,7 +87,6 @@ export default function Icon({ icon }: { icon: string }) {
         >
           <g
             id="account_circle_24dp_00000_FILL0_wght200_GRAD0_opsz24 1"
-            clip-path="url(#clip0_318_74)"
           >
             <path
               id="Vector"
@@ -95,11 +94,6 @@ export default function Icon({ icon }: { icon: string }) {
               fill={fillColor}
             />
           </g>
-          <defs>
-            <clipPath id="clip0_318_74">
-              <rect width="24" height="24" fill="white" />
-            </clipPath>
-          </defs>
         </svg>
       );
   }
