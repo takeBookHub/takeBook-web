@@ -2,7 +2,11 @@ import { useAtom } from "jotai";
 import { useState, useEffect } from "react";
 import Cookie from "universal-cookie";
 
-import { createChat, getChats } from "../../utils/api/requests/ai.requests.ts";
+import {
+  createChat,
+  deleteChat,
+  getChats,
+} from "../../utils/api/requests/ai.requests.ts";
 
 import {
   chatsAtom,
@@ -46,6 +50,13 @@ export default function Chat() {
       setErrorMessage(response.error);
     }
     setIsCreationLoading(false);
+  };
+
+  const deleteChatRequest = async (subject: string) => {
+    const response = await deleteChat(token, subject);
+    if (response.success) {
+      await getChatsRequest();
+    }
   };
 
   const getChatsRequest = async () => {
@@ -161,9 +172,9 @@ export default function Chat() {
                     </div>
                     <button
                       className="p-4"
-                      onClick={(e) => {
+                      onClick={async (e) => {
                         e.stopPropagation();
-                        alert("Delete");
+                        await deleteChatRequest(chat.subject);
                       }}
                     >
                       <img src="/icons/minus.svg" alt="Minus Icon" />
