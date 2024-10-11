@@ -53,10 +53,8 @@ export default function Chat() {
   };
 
   const deleteChatRequest = async (subject: string) => {
-    const response = await deleteChat(token, subject);
-    if (response.success) {
-      await getChatsRequest();
-    }
+    await deleteChat(token, subject);
+    await getChatsRequest();
   };
 
   const getChatsRequest = async () => {
