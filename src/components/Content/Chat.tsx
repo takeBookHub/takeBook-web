@@ -17,6 +17,7 @@ import {
 
 import Input from "../Input";
 import Button from "../Button";
+import Message from "../Chat/Message.tsx";
 
 interface ChatInterface {
   _id: string;
@@ -192,7 +193,17 @@ export default function Chat() {
             </div>
           ) : (
             <div className="w-full h-full flex flex-col items-center">
-              <div className="h-full w-full"></div>
+              <div className="h-full w-full flex flex-col gap-8 justify-end pb-6">
+                <Message author="user">
+                  Hi Pandy! Can you help me with{" "}
+                  {
+                    chats.find((element) => element._id === currentChatId)
+                      ?.subject
+                  }
+                  ?
+                </Message>
+                <Message author={"ai"}>Sure! How can I help you?</Message>
+              </div>
               <div className="bg-[#EFEFEF] rounded-lg w-full flex p-4 gap-3">
                 <button>
                   <img src="/icons/add-file.svg" alt="Add File Icon" />
