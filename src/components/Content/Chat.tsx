@@ -46,6 +46,7 @@ export default function Chat() {
     if (response.success) {
       await getChatsRequest();
       setIsSubjectPopupOpen(false);
+      setSubjectInput("");
     } else {
       setErrorMessage(response.error);
     }
