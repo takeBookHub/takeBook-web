@@ -6,6 +6,7 @@ import {
   createChat,
   deleteChat,
   getChats,
+  uploadNotes,
 } from "../../utils/api/requests/ai.requests.ts";
 
 import {
@@ -37,6 +38,10 @@ export default function Chat() {
   const [isSubjectPopupOpen, setIsSubjectPopupOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isNotesPopupOpen, setIsNotesPopupOpen] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [isNotesUploadLoading, setIsNotesUploadLoading] = useState(false);
+  const [notesErrorMessage, setNotesErrorMessage] = useState("");
 
   const cookies = new Cookie();
   const token = cookies.get("x-auth-token");
@@ -69,6 +74,17 @@ export default function Chat() {
     }
   };
 
+  const uploadNotesRequest = async () => {
+    setIsNotesUploadLoading(true);
+    const response = await uploadNotes(token, currentChatId, notes);
+    if (!response.success) {
+      setNotesErrorMessage(response.error);
+    } else {
+      setIsNotesPopupOpen(false);
+    }
+    setIsNotesUploadLoading(false);
+  };
+
   useEffect(() => {
     if (chats.length === 0 && firstLoad) getChatsRequest();
   }, []);
@@ -79,7 +95,13 @@ export default function Chat() {
         setErrorMessage("");
       }, 10000);
     }
-  }, [errorMessage]);
+
+    if (notesErrorMessage.length > 0) {
+      setTimeout(() => {
+        setNotesErrorMessage("");
+      }, 10000);
+    }
+  }, [errorMessage, notesErrorMessage]);
 
   return (
     <div className="w-full h-full flex items-center justify-center relative p-4">
@@ -122,6 +144,37 @@ export default function Chat() {
         </div>
       )}
 
+      {isNotesPopupOpen && (
+        <div className="w-full h-full absolute">
+          <div
+            className="h-full w-full left-0 bg-black opacity-30 fixed z-10"
+            onClick={() => setIsNotesPopupOpen(false)}
+          />
+          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-[800px] h-[80%] lg:h-[50%] flex flex-col items-center justify-center p-4 bg-white rounded-lg gap-6 z-20">
+            <span className="font-bold">Upload notes</span>
+            <div className="flex flex-col w-full h-full gap-1">
+              <textarea
+                onChange={(e) => setNotes(e.target.value)}
+                value={notes}
+                className="bg-[#EFEFEF] border border-[#D8D8D8] resize-none h-full rounded-lg outline-none p-2"
+              />
+            </div>
+            {notesErrorMessage.length > 0 && (
+              <span className="font-semibold text-red-400">
+                {notesErrorMessage}
+              </span>
+            )}
+            <Button
+              disabled={isNotesUploadLoading}
+              onClick={() => uploadNotesRequest()}
+              className="w-full"
+            >
+              Upload
+            </Button>
+          </div>
+        </div>
+      )}
+
       {chatsLoading && <span>Loading...</span>}
 
       {chats.length === 0 ? (
@@ -138,9 +191,10 @@ export default function Chat() {
           <div className="w-full p-4 bg-[#C0F4C1] flex items-center gap-3 rounded-lg">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <img
-                className="h-[14px]"
+                className="h-[14px] select-none"
                 src="/icons/hamburger-menu.svg"
                 alt="Hamburguer Menu Icon"
+                draggable="false"
               />
             </button>
             <span className="text-[#23771e] font-semibold">
@@ -205,15 +259,25 @@ export default function Chat() {
                 <Message author={"ai"}>Sure! How can I help you?</Message>
               </div>
               <div className="bg-[#EFEFEF] rounded-lg w-full flex p-4 gap-3">
-                <button>
-                  <img src="/icons/add-file.svg" alt="Add File Icon" />
+                <button onClick={() => setIsNotesPopupOpen(true)}>
+                  <img
+                    className="select-none"
+                    src="/icons/add-file.svg"
+                    alt="Add File Icon"
+                    draggable="false"
+                  />
                 </button>
                 <input
-                  className="w-full bg-transparent placeholder:text-[#999999] outline-none font-light"
+                  className="w-full bg-transparent placeholder:text-[#999999] placeholder:select-none outline-none font-light"
                   placeholder="Enter your prompt...."
                 />
                 <button>
-                  <img src="/icons/send.svg" alt="Send Icon" />
+                  <img
+                    className="select-none"
+                    src="/icons/send.svg"
+                    alt="Send Icon"
+                    draggable="false"
+                  />
                 </button>
               </div>
             </div>

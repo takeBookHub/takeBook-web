@@ -32,3 +32,14 @@ export function getChats(token: string) {
     },
   });
 }
+
+export function uploadNotes(token: string, chatId: string, notes: string) {
+  return call(aiEndpoints.uploadNotes, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-auth-token": token,
+    },
+    body: JSON.stringify({ chatId, notes }),
+  });
+}

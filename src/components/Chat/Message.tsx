@@ -12,11 +12,12 @@ export default function Message({ author, children }: MessageProps) {
         <div className="rounded-lg gap-2 w-full flex flex-col justify-start">
           <div className="flex items-center gap-3">
             <img
-              className="rounded-full h-11"
+              className="rounded-full h-11 select-none"
               src="/images/pandy-profile-picture.svg"
               alt="Pandy's Profile Picture"
+              draggable="false"
             />
-            <span className="font-['Crimson_Text'] text-xl font-semibold">
+            <span className="font-['Crimson_Text'] text-xl font-semibold select-none">
               Pandy
             </span>
           </div>
