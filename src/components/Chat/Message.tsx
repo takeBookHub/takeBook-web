@@ -1,3 +1,5 @@
+import Markdown from "react-markdown";
+
 import { ChatMessage } from "../../interfaces/Chat.ts";
 
 export default function Message({ author, children }: ChatMessage) {
@@ -16,7 +18,7 @@ export default function Message({ author, children }: ChatMessage) {
               Pandy
             </span>
           </div>
-          <span className="w-full font-light">{children}</span>
+          <Markdown className="w-full font-light">{children}</Markdown>
         </div>
       );
     case "user":

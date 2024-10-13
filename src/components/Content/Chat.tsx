@@ -89,14 +89,16 @@ export default function Chat() {
 
   const chatRequest = async () => {
     setIsThinking(true);
+    const savedPrompt = prompt;
+    setPrompt("");
     const currentChat = chats.find((element) => element._id === currentChatId);
-    currentChat?.history.push({ role: "user", message: prompt });
+    currentChat?.history.push({ role: "user", message: savedPrompt });
     const updatedChats = chats.map((chat) => {
       if (chat._id === currentChatId) return currentChat;
       return chat;
     });
     setChats(updatedChats as ChatInterface[]);
-    const response = await chat(token, currentChatId, prompt);
+    const response = await chat(token, currentChatId, savedPrompt);
     if (response.success) {
       const updatedChats = await getChats(token);
       setChats(updatedChats.chats);
@@ -137,7 +139,12 @@ export default function Chat() {
   }, [chats, currentChatId]);
 
   return (
-    <div className={"w-full h-full flex justify-center relative p-4 "+(chats.length === 0 ? "items-center" : "items-start")}>
+    <div
+      className={
+        "w-full h-full flex justify-center relative p-4 " +
+        (chats.length === 0 ? "items-center" : "items-start")
+      }
+    >
       {isSubjectPopupOpen && (
         <div className="w-full h-full absolute">
           <div
@@ -328,7 +335,11 @@ export default function Chat() {
                   className="w-full bg-transparent placeholder:text-[#999999] placeholder:select-none outline-none font-light"
                   placeholder="Enter your prompt...."
                 />
-                <button type="submit">
+                <button
+                  className="disabled:opacity-30"
+                  type="submit"
+                  disabled={isThinking}
+                >
                   <img
                     className="select-none"
                     src="/icons/send.svg"

@@ -1,5 +1,3 @@
-import React from "react";
-
 interface History {
   role: ChatMessage["author"];
   message: string;
@@ -15,5 +13,5 @@ export interface ChatInterface {
 
 export interface ChatMessage {
   author: "model" | "user";
-  children: React.ReactNode;
+  children: string;
 }
