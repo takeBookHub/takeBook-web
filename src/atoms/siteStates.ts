@@ -1,11 +1,6 @@
 import { atom } from "jotai";
 
-interface ChatInterface {
-  _id: string;
-  user: string;
-  subject: string;
-  notes: string;
-}
+import { ChatInterface } from "../interfaces/Chat.ts";
 
 export const currentViewAtom = atom("landing");
 export const currentHomeContentAtom = atom("chat");

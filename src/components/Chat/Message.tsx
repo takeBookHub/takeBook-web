@@ -1,13 +1,8 @@
-import React from "react";
+import { ChatMessage } from "../../interfaces/Chat.ts";
 
-interface MessageProps {
-  author: "ai" | "user";
-  children: React.ReactNode;
-}
-
-export default function Message({ author, children }: MessageProps) {
+export default function Message({ author, children }: ChatMessage) {
   switch (author) {
-    case "ai":
+    case "model":
       return (
         <div className="rounded-lg gap-2 w-full flex flex-col justify-start">
           <div className="flex items-center gap-3">
@@ -27,7 +22,7 @@ export default function Message({ author, children }: MessageProps) {
     case "user":
       return (
         <div className="w-full flex justify-end">
-          <span className="bg-[#C0F4C1] text-[#23771E] w-[90%] max-w-[450px] font-semibold rounded-lg p-4">
+          <span className="bg-[#C0F4C1] text-[#23771E] max-w-[90%] sm:max-w-[450px] font-semibold rounded-lg p-4">
             {children}
           </span>
         </div>

@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Cookie from "universal-cookie";
 
 import {
@@ -7,6 +7,7 @@ import {
   deleteChat,
   getChats,
   uploadNotes,
+  chat,
 } from "../../utils/api/requests/ai.requests.ts";
 
 import {
@@ -20,12 +21,7 @@ import Input from "../Input";
 import Button from "../Button";
 import Message from "../Chat/Message.tsx";
 
-interface ChatInterface {
-  _id: string;
-  user: string;
-  subject: string;
-  notes: string;
-}
+import { ChatInterface, ChatMessage } from "../../interfaces/Chat.ts";
 
 export default function Chat() {
   const [chats, setChats] = useAtom<ChatInterface[]>(chatsAtom);
@@ -42,6 +38,12 @@ export default function Chat() {
   const [notes, setNotes] = useState("");
   const [isNotesUploadLoading, setIsNotesUploadLoading] = useState(false);
   const [notesErrorMessage, setNotesErrorMessage] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [isThinking, setIsThinking] = useState(false);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const cookies = new Cookie();
   const token = cookies.get("x-auth-token");
@@ -85,8 +87,32 @@ export default function Chat() {
     setIsNotesUploadLoading(false);
   };
 
+  const chatRequest = async () => {
+    setIsThinking(true);
+    const currentChat = chats.find((element) => element._id === currentChatId);
+    currentChat?.history.push({ role: "user", message: prompt });
+    const updatedChats = chats.map((chat) => {
+      if (chat._id === currentChatId) return currentChat;
+      return chat;
+    });
+    setChats(updatedChats as ChatInterface[]);
+    const response = await chat(token, currentChatId, prompt);
+    if (response.success) {
+      const updatedChats = await getChats(token);
+      setChats(updatedChats.chats);
+    }
+    setIsThinking(false);
+  };
+
   useEffect(() => {
     if (chats.length === 0 && firstLoad) getChatsRequest();
+
+    const handleResize = () => {
+      setScreenHeight(window.innerHeight);
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -103,8 +129,15 @@ export default function Chat() {
     }
   }, [errorMessage, notesErrorMessage]);
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [chats, currentChatId]);
+
   return (
-    <div className="w-full h-full flex items-center justify-center relative p-4">
+    <div className={"w-full h-full flex justify-center relative p-4 "+(chats.length === 0 ? "items-center" : "items-start")}>
       {isSubjectPopupOpen && (
         <div className="w-full h-full absolute">
           <div
@@ -187,7 +220,7 @@ export default function Chat() {
           </div>
         )
       ) : (
-        <div className="h-full w-full max-w-[800px] flex flex-col items-center justify-between">
+        <div className="w-full h-full max-w-[800px] flex flex-col items-center justify-between">
           <div className="w-full p-4 bg-[#C0F4C1] flex items-center gap-3 rounded-lg">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <img
@@ -247,19 +280,41 @@ export default function Chat() {
             </div>
           ) : (
             <div className="w-full h-full flex flex-col items-center">
-              <div className="h-full w-full flex flex-col gap-8 justify-end pb-6">
-                <Message author="user">
-                  Hi Pandy! Can you help me with{" "}
-                  {
-                    chats.find((element) => element._id === currentChatId)
-                      ?.subject
-                  }
-                  ?
-                </Message>
-                <Message author={"ai"}>Sure! How can I help you?</Message>
+              <div
+                className="w-full h-full flex flex-col gap-8 py-6 px-2 overflow-y-auto"
+                style={{
+                  height: "100%",
+                  maxHeight:
+                    screenHeight - (screenWidth <= 1024 ? 250 : 150) + "px",
+                  scrollbarWidth: "none",
+                }}
+                ref={chatContainerRef}
+              >
+                {chats
+                  .find((element) => element._id === currentChatId)
+                  ?.history.map(
+                    (
+                      item: {
+                        role: ChatMessage["author"];
+                        message: string;
+                      },
+                      index: number,
+                    ) => (
+                      <Message key={index} author={item.role}>
+                        {item.message}
+                      </Message>
+                    ),
+                  )}
+                {isThinking && <Message author="model">Thinking...</Message>}
               </div>
-              <div className="bg-[#EFEFEF] rounded-lg w-full flex p-4 gap-3">
-                <button onClick={() => setIsNotesPopupOpen(true)}>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  await chatRequest();
+                }}
+                className="bg-[#EFEFEF] rounded-lg w-full flex p-4 gap-3"
+              >
+                <button onClick={() => setIsNotesPopupOpen(true)} type="button">
                   <img
                     className="select-none"
                     src="/icons/add-file.svg"
@@ -268,10 +323,12 @@ export default function Chat() {
                   />
                 </button>
                 <input
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
                   className="w-full bg-transparent placeholder:text-[#999999] placeholder:select-none outline-none font-light"
                   placeholder="Enter your prompt...."
                 />
-                <button>
+                <button type="submit">
                   <img
                     className="select-none"
                     src="/icons/send.svg"
@@ -279,7 +336,7 @@ export default function Chat() {
                     draggable="false"
                   />
                 </button>
-              </div>
+              </form>
             </div>
           )}
         </div>

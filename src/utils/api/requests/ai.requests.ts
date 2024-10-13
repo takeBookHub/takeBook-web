@@ -43,3 +43,14 @@ export function uploadNotes(token: string, chatId: string, notes: string) {
     body: JSON.stringify({ chatId, notes }),
   });
 }
+
+export function chat(token: string, chatId: string, message: string) {
+  return call(aiEndpoints.chat, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-auth-token": token,
+    },
+    body: JSON.stringify({ chatId, message }),
+  });
+}
