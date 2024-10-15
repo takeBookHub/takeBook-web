@@ -14,4 +14,5 @@ export interface ChatInterface {
 export interface ChatMessage {
   author: "model" | "user";
   children: string;
+  thinking?: boolean;
 }

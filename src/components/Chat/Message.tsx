@@ -2,7 +2,7 @@ import Markdown from "react-markdown";
 
 import { ChatMessage } from "../../interfaces/Chat.ts";
 
-export default function Message({ author, children }: ChatMessage) {
+export default function Message({ author, children, thinking }: ChatMessage) {
   switch (author) {
     case "model":
       return (
@@ -18,7 +18,11 @@ export default function Message({ author, children }: ChatMessage) {
               Pandy
             </span>
           </div>
-          <Markdown className="w-full font-light">{children}</Markdown>
+          {thinking ? (
+            <span className="animate-pulse">{children}</span>
+          ) : (
+            <Markdown className="w-full font-light">{children}</Markdown>
+          )}
         </div>
       );
     case "user":

@@ -38,6 +38,10 @@ export default function Chat() {
   const [notes, setNotes] = useState("");
   const [isNotesUploadLoading, setIsNotesUploadLoading] = useState(false);
   const [notesErrorMessage, setNotesErrorMessage] = useState("");
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+    useState(false);
+  const [selectedDeletion, setSelectedDeletion] = useState("");
+  const [isDeletionLoading, setIsDeletionLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [screenHeight, setScreenHeight] = useState(window.innerHeight);
@@ -62,8 +66,10 @@ export default function Chat() {
   };
 
   const deleteChatRequest = async (subject: string) => {
+    setIsDeletionLoading(true);
     await deleteChat(token, subject);
     await getChatsRequest();
+    setIsDeletionLoading(false);
   };
 
   const getChatsRequest = async () => {
@@ -102,6 +108,19 @@ export default function Chat() {
     if (response.success) {
       const updatedChats = await getChats(token);
       setChats(updatedChats.chats);
+    } else {
+      const currentChat = chats.find(
+        (element) => element._id === currentChatId,
+      );
+      currentChat?.history.push({
+        role: "model",
+        message: "**There was an internal error, please try again.**",
+      });
+      const updatedChats = chats.map((chat) => {
+        if (chat._id === currentChatId) return currentChat;
+        return chat;
+      });
+      setChats(updatedChats as ChatInterface[]);
     }
     setIsThinking(false);
   };
@@ -148,7 +167,7 @@ export default function Chat() {
       {isSubjectPopupOpen && (
         <div className="w-full h-full absolute">
           <div
-            className="h-full w-full left-0 bg-black opacity-30 fixed z-10"
+            className="h-full w-full left-0 top-0 bg-black opacity-30 fixed z-10"
             onClick={() => setIsSubjectPopupOpen(false)}
           />
           <form
@@ -187,7 +206,7 @@ export default function Chat() {
       {isNotesPopupOpen && (
         <div className="w-full h-full absolute">
           <div
-            className="h-full w-full left-0 bg-black opacity-30 fixed z-10"
+            className="h-full w-full left-0 top-0 bg-black opacity-30 fixed z-10"
             onClick={() => setIsNotesPopupOpen(false)}
           />
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-[800px] h-[80%] lg:h-[50%] flex flex-col items-center justify-center p-4 bg-white rounded-lg gap-6 z-20">
@@ -211,6 +230,51 @@ export default function Chat() {
             >
               Upload
             </Button>
+          </div>
+        </div>
+      )}
+
+      {isDeleteConfirmationOpen && (
+        <div className="w-full h-full absolute">
+          <div
+            className="h-full w-full left-0 top-0 bg-black opacity-30 fixed z-10"
+            onClick={() => {
+              if (!isDeletionLoading) {
+                setIsDeleteConfirmationOpen(false);
+              }
+            }}
+          />
+          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-96 flex flex-col items-center justify-center p-4 bg-white rounded-lg gap-6 z-20">
+            <span className="font-bold text-center">
+              Are you sure you want to delete {selectedDeletion}?
+            </span>
+            {notesErrorMessage.length > 0 && (
+              <span className="font-semibold text-red-400">
+                {notesErrorMessage}
+              </span>
+            )}
+            <div className="flex gap-2 w-full">
+              <Button
+                disabled={isDeletionLoading}
+                design="danger"
+                onClick={async () => {
+                  await deleteChatRequest(selectedDeletion);
+                  setIsDeleteConfirmationOpen(false);
+                }}
+                className="w-full"
+              >
+                {isDeletionLoading ? "Deleting..." : "Delete"}
+              </Button>
+              {!isDeletionLoading && (
+                <Button
+                  design="secondary"
+                  onClick={() => setIsDeleteConfirmationOpen(false)}
+                  className="w-full"
+                >
+                  Cancel
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -268,7 +332,8 @@ export default function Chat() {
                       className="p-4"
                       onClick={async (e) => {
                         e.stopPropagation();
-                        await deleteChatRequest(chat.subject);
+                        setSelectedDeletion(chat.subject);
+                        setIsDeleteConfirmationOpen(true);
                       }}
                     >
                       <img src="/icons/minus.svg" alt="Minus Icon" />
@@ -312,7 +377,11 @@ export default function Chat() {
                       </Message>
                     ),
                   )}
-                {isThinking && <Message author="model">Thinking...</Message>}
+                {isThinking && (
+                  <Message author="model" thinking>
+                    Thinking...
+                  </Message>
+                )}
               </div>
               <form
                 onSubmit={async (e) => {
