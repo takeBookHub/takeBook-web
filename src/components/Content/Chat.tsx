@@ -326,7 +326,7 @@ export default function Chat() {
                         src="/icons/open-book.svg"
                         alt="Open Book Icon"
                       />
-                      <span className="font-medium">{chat.subject}</span>
+                      <span className="font-medium text-start">{chat.subject}</span>
                     </div>
                     <button
                       className="p-4"
