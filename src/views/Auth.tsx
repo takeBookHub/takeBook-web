@@ -120,7 +120,7 @@ export default function Auth() {
             I have read and agreed to the{" "}
             <a
               className="text-[#23771e] font-semibold"
-              href="/terms-of-service"
+              href="/#terms-of-service"
               target="_blank"
             >
               Terms of Service
@@ -128,7 +128,7 @@ export default function Auth() {
             ,{" "}
             <a
               className="text-[#23771e] font-semibold"
-              href="/privacy-policy"
+              href="/#privacy-policy"
               target="_blank"
             >
               Privacy Policy
@@ -136,7 +136,7 @@ export default function Auth() {
             and{" "}
             <a
               className="text-[#23771e] font-semibold"
-              href="/refund-policy"
+              href="/#refund-policy"
               target="_blank"
             >
               Refund Policy
