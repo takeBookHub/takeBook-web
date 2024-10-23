@@ -165,7 +165,7 @@ export default function Chat() {
       }
     >
       {isSubjectPopupOpen && (
-        <div className="w-full h-full absolute">
+        <div className="w-full h-full fixed">
           <div
             className="h-full w-full left-0 top-0 bg-black opacity-30 fixed z-10"
             onClick={() => setIsSubjectPopupOpen(false)}
@@ -204,7 +204,7 @@ export default function Chat() {
       )}
 
       {isNotesPopupOpen && (
-        <div className="w-full h-full absolute">
+        <div className="w-full h-full fixed">
           <div
             className="h-full w-full left-0 top-0 bg-black opacity-30 fixed z-10"
             onClick={() => setIsNotesPopupOpen(false)}
@@ -235,7 +235,7 @@ export default function Chat() {
       )}
 
       {isDeleteConfirmationOpen && (
-        <div className="w-full h-full absolute">
+        <div className="w-full h-full fixed">
           <div
             className="h-full w-full left-0 top-0 bg-black opacity-30 fixed z-10"
             onClick={() => {

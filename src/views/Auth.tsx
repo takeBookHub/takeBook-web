@@ -22,6 +22,7 @@ export default function Auth() {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isRequestLoading, setIsRequestLoading] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(false);
 
   useEffect(() => {
     if (errorMessage.length > 0) {
@@ -105,13 +106,43 @@ export default function Auth() {
         </div>
       </div>
       <div className="flex flex-col gap-3 items-center w-11/12 sm:w-96">
-        <Button
-          className="w-full"
-          disabled={isRequestLoading}
-          type="submit"
-        >
+        <Button className="w-full" disabled={isRequestLoading || !termsAgreed} type="submit">
           {authType === 0 ? "Register" : "Log In"}
         </Button>
+        <div className="max-w-96 flex items-center mt-2">
+          <span className="text-center">
+            <input
+              className="mr-1"
+              type="checkbox"
+              checked={termsAgreed}
+              onChange={(e) => setTermsAgreed(e.target.checked)}
+            />
+            I have read and agreed to the{" "}
+            <a
+              className="text-[#23771e] font-semibold"
+              href="/terms-of-service"
+              target="_blank"
+            >
+              Terms of Service
+            </a>
+            ,{" "}
+            <a
+              className="text-[#23771e] font-semibold"
+              href="/privacy-policy"
+              target="_blank"
+            >
+              Privacy Policy
+            </a>{" "}
+            and{" "}
+            <a
+              className="text-[#23771e] font-semibold"
+              href="/refund-policy"
+              target="_blank"
+            >
+              Refund Policy
+            </a>
+          </span>
+        </div>
         {errorMessage.length > 0 && (
           <span className="text-red-400 text-center">{errorMessage}</span>
         )}

@@ -1,19 +1,19 @@
-import Landing from "./views/Landing";
-import Auth from "./views/Auth";
-import Home from "./views/Home";
-import Email from "./views/Email";
-import Loading from "./views/Loading";
+import Landing from "../views/Landing.tsx";
+import Auth from "../views/Auth.tsx";
+import Home from "../views/Home.tsx";
+import Email from "../views/Email.tsx";
+import Loading from "../views/Loading.tsx";
 
 import { useAtom } from "jotai";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 
-import { currentViewAtom } from "./atoms/siteStates.ts";
-import { isAuthenticatedAtom } from "./atoms/authStates.ts";
-import { userDataAtom } from "./atoms/userStates.ts";
+import { currentViewAtom } from "../atoms/siteStates.ts";
+import { isAuthenticatedAtom } from "../atoms/authStates.ts";
+import { userDataAtom } from "../atoms/userStates.ts";
 
-import { checkSession } from "./utils/functions/auth.functions.ts";
-import { getProfile } from "./utils/api/requests/profile.requests.ts";
+import { checkSession } from "../utils/functions/auth.functions.ts";
+import { getProfile } from "../utils/api/requests/profile.requests.ts";
 
 export default function App() {
   const [currentView] = useAtom(currentViewAtom);
