@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 
 import App from "./routes/App.tsx";
 import TermsOfService from "./routes/TermsOfService.tsx";
@@ -8,7 +8,7 @@ import RefundPolicy from "./routes/RefundPolicy.tsx";
 
 import "./index.css";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <App />,
